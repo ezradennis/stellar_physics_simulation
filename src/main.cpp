@@ -145,14 +145,14 @@ int main()
 	glViewport(0, 0, width, height);
 
 	// generate Shader object using shaders (vertex, fragment)
-	Shader shaderProgram("default.vert", "default.frag");
+	Shader shaderProgram("shaders/default.vert", "shaders/default.frag");
 
 	Sphere sphere1(0.5f, 50, 50, glm::vec3(0.0f));
 	Sphere sphere2(0.3f, 50, 50, glm::vec3(1.0f, 0.0f, 0.0f));
 
 	// texture
 
-	Texture muffin("muffin.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+	Texture muffin("assets/muffin.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
 	muffin.texUnit(shaderProgram, "tex0", 0);
 
 
