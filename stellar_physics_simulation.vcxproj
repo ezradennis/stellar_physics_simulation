@@ -151,7 +151,7 @@
   <ItemGroup>
     <None Include="default.frag" />
     <None Include="default.vert" />
-    <None Include="glsl default.vert" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="muffin.png" />

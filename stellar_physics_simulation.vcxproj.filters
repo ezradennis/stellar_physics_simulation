@@ -76,7 +76,9 @@
     <None Include="default.vert">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="glsl default.vert" />
+    <None Include="README.md">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="muffin.png">
