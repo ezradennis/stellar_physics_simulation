@@ -19,9 +19,8 @@
 #include"Star.h"
 
 
-const unsigned int width = 1024;
-const unsigned int height = 768;
-
+const unsigned int width = 1920;
+const unsigned int height = 1080;
 float textMult = 1.0f;
 
 GLfloat vertices[] =
@@ -80,6 +79,7 @@ int main()
 	Star sun(1.0f, 50, 50, 1.0f, 6000.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 	Star coldDwarf(0.25f, 50, 50, 0.2f, 3000.0f, glm::vec3(2.0f, 0.0f, 0.0f));
 	Star hotGiant(5.0f, 50, 50, 10.0f, 20000.0f, glm::vec3(-8.0f, -3.0f, 0.0f));
+	Star coldSupermassive(50.0f, 50, 50, 5.0f, 3000.0f, glm::vec3(70.0f, 20.0f, 0.0f));
 	// texture
 
 	Texture muffin("assets/muffin.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
@@ -103,9 +103,9 @@ int main()
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 
-
 		// specify background color
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		
 		// clear the color and depth in the back buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		// tell OpenGL which Shader Program to use
@@ -139,6 +139,9 @@ int main()
 
 		glUniform1f(glGetUniformLocation(shaderProgram.ID, "temperature"), hotGiant.temperature);
 		hotGiant.Draw(shaderProgram);
+
+		glUniform1f(glGetUniformLocation(shaderProgram.ID, "temperature"), coldSupermassive.temperature);
+		coldSupermassive.Draw(shaderProgram);
 
 		glfwSwapBuffers(window);
 
