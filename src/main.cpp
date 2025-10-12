@@ -16,10 +16,11 @@
 #include"Texture.h"
 #include"Camera.h"
 #include"Sphere.h"
+#include"Star.h"
 
 
-const unsigned int width = 800;
-const unsigned int height = 800;
+const unsigned int width = 1024;
+const unsigned int height = 768;
 
 float textMult = 1.0f;
 
@@ -42,77 +43,6 @@ GLuint indices[] =
 	3, 0, 4
 };
 
-// Generates a UV sphere
-void generateSphere(float radius, unsigned int sectorCount, unsigned int stackCount,
-	std::vector<float>& vertices, std::vector<unsigned int>& indices)
-{
-	const float PI = 3.14159265359f;
-	float x, y, z, xy;                              // vertex position
-	float nx, ny, nz, lengthInv = 1.0f / radius;    // normal
-	float s, t;                                     // texCoord
-
-	float sectorStep = 2 * PI / sectorCount;
-	float stackStep = PI / stackCount;
-	float sectorAngle, stackAngle;
-
-	for (unsigned int i = 0; i <= stackCount; ++i)
-	{
-		stackAngle = PI / 2 - i * stackStep;        // from pi/2 to -pi/2
-		xy = radius * cosf(stackAngle);             // r * cos(u)
-		z = radius * sinf(stackAngle);              // r * sin(u)
-
-		for (unsigned int j = 0; j <= sectorCount; ++j)
-		{
-			sectorAngle = j * sectorStep;           // from 0 to 2pi
-
-			// vertex position
-			x = xy * cosf(sectorAngle);             // r * cos(u) * cos(v)
-			y = xy * sinf(sectorAngle);             // r * cos(u) * sin(v)
-			vertices.push_back(x);
-			vertices.push_back(y);
-			vertices.push_back(z);
-
-			// normal
-			nx = x * lengthInv;
-			ny = y * lengthInv;
-			nz = z * lengthInv;
-			vertices.push_back(nx);
-			vertices.push_back(ny);
-			vertices.push_back(nz);
-
-			// tex coords
-			s = (float)j / sectorCount;
-			t = (float)i / stackCount;
-			vertices.push_back(s);
-			vertices.push_back(t);
-		}
-	}
-
-	// indices
-	unsigned int k1, k2;
-	for (unsigned int i = 0; i < stackCount; ++i)
-	{
-		k1 = i * (sectorCount + 1);     // beginning of current stack
-		k2 = k1 + sectorCount + 1;      // beginning of next stack
-
-		for (unsigned int j = 0; j < sectorCount; ++j, ++k1, ++k2)
-		{
-			if (i != 0)
-			{
-				indices.push_back(k1);
-				indices.push_back(k2);
-				indices.push_back(k1 + 1);
-			}
-			if (i != (stackCount - 1))
-			{
-				indices.push_back(k1 + 1);
-				indices.push_back(k2);
-				indices.push_back(k2 + 1);
-			}
-		}
-	}
-}
-
 int main()
 {
 	glfwInit();
@@ -125,7 +55,7 @@ int main()
 
 	// creates window with 800 width 800 height, title, and null parameters for monitor and share
 	// then checks if window actually exists and if it doesnt it terminates GLFW and does a print statement
-	GLFWwindow* window = glfwCreateWindow(width, height, "OpenGL... Again", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(width, height, "stellar physics", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -145,11 +75,11 @@ int main()
 	glViewport(0, 0, width, height);
 
 	// generate Shader object using shaders (vertex, fragment)
-	Shader shaderProgram("shaders/default.vert", "shaders/default.frag");
+	Shader shaderProgram("shaders/default.vert", "shaders/star.frag");
 
-	Sphere sphere1(0.5f, 50, 50, glm::vec3(0.0f));
-	Sphere sphere2(0.3f, 50, 50, glm::vec3(1.0f, 0.0f, 0.0f));
-
+	Star sun(1.0f, 50, 50, 1.0f, 6000.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+	Star coldDwarf(0.25f, 50, 50, 0.2f, 3000.0f, glm::vec3(2.0f, 0.0f, 0.0f));
+	Star hotGiant(5.0f, 50, 50, 10.0f, 20000.0f, glm::vec3(-8.0f, -3.0f, 0.0f));
 	// texture
 
 	Texture muffin("assets/muffin.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
@@ -175,7 +105,7 @@ int main()
 
 
 		// specify background color
-		glClearColor(0.0f, 0.0f, 0.8f, 1.0f);
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		// clear the color and depth in the back buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		// tell OpenGL which Shader Program to use
@@ -185,8 +115,30 @@ int main()
 		// updates and exports camera matrix to the Vertex Shader
 		camera.Matrix(45.0f, 0.1f, 100.0f, shaderProgram, "camMatrix");
 
-		sphere1.Draw(shaderProgram);
-		sphere2.Draw(shaderProgram);
+		// TEMP INPUTS
+		bool hKeyPressed = glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS;
+		bool gKeyPressed = glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS;
+
+		if (hKeyPressed) {
+			sun.smoothSetTemp(sun.temperature + 2000.0f, deltaTime);
+			printf("Temperature: %f K\n", sun.temperature);
+		}
+		else if (gKeyPressed) {
+			sun.smoothSetTemp(sun.temperature - 2000.0f, deltaTime);
+			printf("Temperature: %f K\n", sun.temperature);
+		}
+
+		// END TEMP INPUTS - REMOVE LATER
+
+
+		glUniform1f(glGetUniformLocation(shaderProgram.ID, "temperature"), sun.temperature);
+		sun.Draw(shaderProgram);
+
+		glUniform1f(glGetUniformLocation(shaderProgram.ID, "temperature"), coldDwarf.temperature);
+		coldDwarf.Draw(shaderProgram);
+
+		glUniform1f(glGetUniformLocation(shaderProgram.ID, "temperature"), hotGiant.temperature);
+		hotGiant.Draw(shaderProgram);
 
 		glfwSwapBuffers(window);
 

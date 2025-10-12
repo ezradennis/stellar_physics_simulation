@@ -16,7 +16,7 @@ void Camera::Matrix(float FOVdeg, float nearPlane, float farPlane, Shader& shade
 	// makes the camera look at the right direction from the right position
 	view = glm::lookAt(Position, Position + Orientation, Up);
 	// adds perspective to the scene
-	projection = glm::perspective(glm::radians(FOVdeg), (float)(width / height), nearPlane, farPlane);
+	projection = glm::perspective(glm::radians(FOVdeg), (float)width / (float)height, nearPlane, farPlane);
 	// exports camera matrix to the Vertex Shader
 	glUniformMatrix4fv(glGetUniformLocation(shader.ID, uniform), 1, GL_FALSE, glm::value_ptr(projection * view));
 }
@@ -80,7 +80,7 @@ void Camera::Inputs(GLFWwindow* window, float deltaTime)
 		// normalizes and shifts the coordinates of the cursor so that they are in the middle of the screen
 		// and then "transforms" them into degrees
 		float rotX = sensitivity * (float)(mouseY - (height / 2)) / height;
-		float rotY = sensitivity * (float)(mouseX - (height / 2)) / height;
+		float rotY = sensitivity * (float)(mouseX - (width / 2)) / height;
 
 		// calculates the next vertical change in orientation
 		glm::vec3 newOrientation = glm::rotate(Orientation, glm::radians(-rotX), glm::normalize(glm::cross(Orientation, Up)));

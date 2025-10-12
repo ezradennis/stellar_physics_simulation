@@ -138,6 +138,7 @@
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\VAO.cpp" />
     <ClCompile Include="src\VBO.cpp" />
+    <ClCompile Include="src\Star.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Camera.h" />
@@ -147,11 +148,13 @@
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\VAO.h" />
     <ClInclude Include="src\VBO.h" />
+    <ClInclude Include="src\Star.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
     <None Include="shaders\default.frag" />
     <None Include="shaders\default.vert" />
+    <None Include="shaders\star.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\muffin.png" />
