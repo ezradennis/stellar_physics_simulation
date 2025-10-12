@@ -2,13 +2,15 @@
 
 WIP stellar physics simulation in C++ using OpenGL
 
-## Future Plans
+## TODO
 
-- Implement creating new astrophysical bodies at runtime
-- Implement gravity
-- Implement orbits
+- Gravity & orbit simulation
+- Planets
+- Creating new astrophysical bodies at runtime
+- UI for modifying properties of bodies & simulation parameters
 
 
 ## Might Implement
 
- - Other types of stellar objects (e.g., neutron stars, black holes) that would be based on mass and radius
+ - Other types of stellar objects (e.g., neutron stars, black holes)
+ - Cooler looking visuals (more vibrant colors, skybox, etc.)
