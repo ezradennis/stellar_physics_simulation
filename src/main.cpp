@@ -76,10 +76,19 @@ int main()
 	// generate Shader object using shaders (vertex, fragment)
 	Shader shaderProgram("shaders/default.vert", "shaders/star.frag");
 
-	Star sun(1.0f, 50, 50, 1.0f, 6000.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-	Star coldDwarf(0.25f, 50, 50, 0.2f, 3000.0f, glm::vec3(2.0f, 0.0f, 0.0f));
-	Star hotGiant(5.0f, 50, 50, 10.0f, 20000.0f, glm::vec3(-8.0f, -3.0f, 0.0f));
-	Star coldSupermassive(50.0f, 50, 50, 5.0f, 3000.0f, glm::vec3(70.0f, 20.0f, 0.0f));
+	
+
+	//     radius  mass  temperature       position
+	Star sun(1.0f, 1.0f, 6000.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+	Star coldDwarf(0.25f, 0.2f, 3000.0f, glm::vec3(5.0f, 0.0f, 0.0f));
+	// Star hotGiant(5.0f, 10.0f, 20000.0f, glm::vec3(-8.0f, -3.0f, 0.0f));
+	// Star coldSupermassive(50.0f, 5.0f, 3000.0f, glm::vec3(70.0f, 20.0f, 0.0f));
+
+	float r = glm::length(coldDwarf.position - sun.position);
+	float v = sqrt(1.0 * sun.mass / r);
+	coldDwarf.velocity = glm::vec3(0.0f, v, 0.0f);
+
+	std::vector<Star*> stars = { &sun, &coldDwarf };
 	// texture
 
 	Texture muffin("assets/muffin.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
@@ -113,7 +122,7 @@ int main()
 
 		camera.Inputs(window, deltaTime);
 		// updates and exports camera matrix to the Vertex Shader
-		camera.Matrix(45.0f, 0.1f, 100.0f, shaderProgram, "camMatrix");
+		camera.Matrix(45.0f, 0.1f, 1000.0f, shaderProgram, "camMatrix");
 
 		// TEMP INPUTS
 		bool hKeyPressed = glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS;
@@ -130,18 +139,17 @@ int main()
 
 		// END TEMP INPUTS - REMOVE LATER
 
+		//glUniform1f(glGetUniformLocation(shaderProgram.ID, "temperature"), sun.temperature);
+		//sun.Draw(shaderProgram);
 
-		glUniform1f(glGetUniformLocation(shaderProgram.ID, "temperature"), sun.temperature);
-		sun.Draw(shaderProgram);
+		
+		for (Star* star : stars) {
+			glUniform1f(glGetUniformLocation(shaderProgram.ID, "temperature"), star->temperature);
+			star->Draw(shaderProgram);
+		}
+		
 
-		glUniform1f(glGetUniformLocation(shaderProgram.ID, "temperature"), coldDwarf.temperature);
-		coldDwarf.Draw(shaderProgram);
-
-		glUniform1f(glGetUniformLocation(shaderProgram.ID, "temperature"), hotGiant.temperature);
-		hotGiant.Draw(shaderProgram);
-
-		glUniform1f(glGetUniformLocation(shaderProgram.ID, "temperature"), coldSupermassive.temperature);
-		coldSupermassive.Draw(shaderProgram);
+		Star::updateAllStarsPhysics(stars, deltaTime);
 
 		glfwSwapBuffers(window);
 
