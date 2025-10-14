@@ -135,7 +135,7 @@ unsigned int loadCubemap(const std::vector<std::string>& faces)
 
 double lastFrameTime = glfwGetTime();
 
-void calculateFPS(GLFWwindow* window, float deltaTime) 
+void calculateFPS(float deltaTime) 
 {
 	double fps = 1.0 / deltaTime;
 
@@ -308,7 +308,7 @@ int main()
 
 		Star::updateAllStarsPhysics(stars, deltaTime);
 
-		calculateFPS(window, deltaTime);
+		calculateFPS(deltaTime);
 
 		glfwSwapBuffers(window);
 
