@@ -35,6 +35,7 @@ public:
 
 	void Matrix(float FOVdeg, float nearPlane, float farPlane, Shader& shader, const char* uniform);
 	void Inputs(GLFWwindow* window, float deltaTime);
+	glm::mat4 getViewMatrix();
 };
 
 #endif

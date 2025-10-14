@@ -21,6 +21,11 @@ void Camera::Matrix(float FOVdeg, float nearPlane, float farPlane, Shader& shade
 	glUniformMatrix4fv(glGetUniformLocation(shader.ID, uniform), 1, GL_FALSE, glm::value_ptr(projection * view));
 }
 
+glm::mat4 Camera::getViewMatrix()
+{
+	return glm::lookAt(Position, Position + Orientation, Up);
+}
+
 void Camera::Inputs(GLFWwindow* window, float deltaTime)
 {
 	// keyboard inputs for movement, WASD and SPACE, LCNTRL
@@ -101,4 +106,5 @@ void Camera::Inputs(GLFWwindow* window, float deltaTime)
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		firstClick = true;
 	}
+
 }

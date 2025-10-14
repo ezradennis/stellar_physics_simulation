@@ -89,10 +89,30 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="shaders\star.frag" />
+    <None Include="shaders\skybox.frag" />
+    <None Include="shaders\skybox.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\muffin.png">
       <Filter>Assets</Filter>
+    </Image>
+    <Image Include="assets\top.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\right.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\left.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\front.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\bottom.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\back.png">
+      <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
 </Project>

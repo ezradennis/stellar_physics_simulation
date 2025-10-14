@@ -169,10 +169,18 @@
     <None Include="README.md" />
     <None Include="shaders\default.frag" />
     <None Include="shaders\default.vert" />
+    <None Include="shaders\skybox.frag" />
+    <None Include="shaders\skybox.vert" />
     <None Include="shaders\star.frag" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="assets\back.png" />
+    <Image Include="assets\bottom.png" />
+    <Image Include="assets\front.png" />
+    <Image Include="assets\left.png" />
     <Image Include="assets\muffin.png" />
+    <Image Include="assets\right.png" />
+    <Image Include="assets\top.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

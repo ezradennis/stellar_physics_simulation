@@ -32,6 +32,51 @@ GLfloat vertices[] =
 	 0.0f,  0.8f,  0.0f,     0.92f, 0.86f, 0.76f,    2.5f, 5.0f,   // top
 };
 
+GLfloat skyboxVertices[] = {
+	// positions          
+	-1.0f,  1.0f, -1.0f,
+	-1.0f, -1.0f, -1.0f,
+	 1.0f, -1.0f, -1.0f,
+	 1.0f, -1.0f, -1.0f,
+	 1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f, -1.0f,
+
+	-1.0f, -1.0f,  1.0f,
+	-1.0f, -1.0f, -1.0f,
+	-1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f, -1.0f,
+	-1.0f,  1.0f,  1.0f,
+	-1.0f, -1.0f,  1.0f,
+
+	 1.0f, -1.0f, -1.0f,
+	 1.0f, -1.0f,  1.0f,
+	 1.0f,  1.0f,  1.0f,
+	 1.0f,  1.0f,  1.0f,
+	 1.0f,  1.0f, -1.0f,
+	 1.0f, -1.0f, -1.0f,
+
+	-1.0f, -1.0f,  1.0f,
+	-1.0f,  1.0f,  1.0f,
+	 1.0f,  1.0f,  1.0f,
+	 1.0f,  1.0f,  1.0f,
+	 1.0f, -1.0f,  1.0f,
+	-1.0f, -1.0f,  1.0f,
+
+	-1.0f,  1.0f, -1.0f,
+	 1.0f,  1.0f, -1.0f,
+	 1.0f,  1.0f,  1.0f,
+	 1.0f,  1.0f,  1.0f,
+	-1.0f,  1.0f,  1.0f,
+	-1.0f,  1.0f, -1.0f,
+
+	-1.0f, -1.0f, -1.0f,
+	-1.0f, -1.0f,  1.0f,
+	 1.0f, -1.0f, -1.0f,
+	 1.0f, -1.0f, -1.0f,
+	-1.0f, -1.0f,  1.0f,
+	 1.0f, -1.0f,  1.0f
+};
+
 GLuint indices[] =
 {
 	0, 1, 2,
@@ -41,6 +86,53 @@ GLuint indices[] =
 	2, 3, 4,
 	3, 0, 4
 };
+
+
+// learnopengl.com skybox 
+unsigned int loadCubemap(const std::vector<std::string>& faces)
+{
+	unsigned int textureID;
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+
+	stbi_set_flip_vertically_on_load(false); 
+
+	int width, height, nrChannels;
+	for (unsigned int i = 0; i < faces.size(); i++)
+	{
+		unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
+		if (!data)
+		{
+			std::cerr << "Failed to load cubemap face: " << faces[i] << std::endl;
+			continue;
+		}
+
+		GLenum format = GL_RGB;
+		if (nrChannels == 1)
+			format = GL_RED;
+		else if (nrChannels == 3)
+			format = GL_RGB;
+		else if (nrChannels == 4)
+			format = GL_RGBA;
+
+		std::cout << "Loaded: " << faces[i] << " (" << width << "x" << height
+			<< ", " << nrChannels << " channels)" << std::endl;
+
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+			0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+
+		stbi_image_free(data);
+	}
+
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+	return textureID;
+}
+
 
 int main()
 {
@@ -75,8 +167,38 @@ int main()
 
 	// generate Shader object using shaders (vertex, fragment)
 	Shader shaderProgram("shaders/default.vert", "shaders/star.frag");
+	Shader skyboxShader("shaders/skybox.vert", "shaders/skybox.frag");
 
-	
+	// skybox
+	std::vector<std::string> faces =
+	{
+		"assets/right.png",
+		"assets/left.png",
+		"assets/top.png",
+		"assets/bottom.png",
+		"assets/front.png",
+		"assets/back.png"
+	};
+
+	std::vector<std::string> faces2 =
+	{
+		"assets/muffin.png",
+		"assets/muffin.png",
+		"assets/muffin.png",
+		"assets/muffin.png",
+		"assets/muffin.png",
+		"assets/muffin.png"
+	};
+
+	unsigned int cubemapTexture = loadCubemap(faces);
+
+	VAO skyboxVAO;
+	skyboxVAO.Bind();
+	VBO skyboxVBO(skyboxVertices, sizeof(skyboxVertices));
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	skyboxVAO.Unbind();
+	skyboxVBO.Unbind();
 
 	//     radius  mass  temperature       position
 	Star sun(1.0f, 1.0f, 6000.0f, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -112,15 +234,45 @@ int main()
 
 		// specify background color
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
+		// camera inputs
+		camera.Inputs(window, deltaTime);
 		
 		// clear the color and depth in the back buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		// tell OpenGL which Shader Program to use
+
+
+		// SKYBOX RENDERING
+		glDepthFunc(GL_LEQUAL);
+		glDepthMask(GL_FALSE);
+
+		skyboxShader.Activate();
+		glUniform1i(glGetUniformLocation(skyboxShader.ID, "skybox"), 0);
+
+		// remove translation part of view matrix
+		glm::mat4 view = glm::mat4(glm::mat3(camera.getViewMatrix()));
+		glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width / height, 0.1f, 1000.0f);
+		glUniformMatrix4fv(glGetUniformLocation(skyboxShader.ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
+		glUniformMatrix4fv(glGetUniformLocation(skyboxShader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+
+		// skybox cube
+		glBindVertexArray(skyboxVAO.ID);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glBindVertexArray(0);
+
+		glDepthMask(GL_TRUE);
+		glDepthFunc(GL_LESS);
+		// SKYBOX DONE
+
+
+		// tell opengl what shader program to use
 		shaderProgram.Activate();
 
-		camera.Inputs(window, deltaTime);
 		// updates and exports camera matrix to the Vertex Shader
 		camera.Matrix(45.0f, 0.1f, 1000.0f, shaderProgram, "camMatrix");
+		
 
 		// TEMP INPUTS
 		bool hKeyPressed = glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS;
@@ -136,9 +288,6 @@ int main()
 		}
 
 		// END TEMP INPUTS - REMOVE LATER
-
-		//glUniform1f(glGetUniformLocation(shaderProgram.ID, "temperature"), sun.temperature);
-		//sun.Draw(shaderProgram);
 
 		
 		for (Star* star : stars) {
