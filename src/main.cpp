@@ -80,15 +80,13 @@ int main()
 
 	//     radius  mass  temperature       position
 	Star sun(1.0f, 1.0f, 6000.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-	Star coldDwarf(0.25f, 0.2f, 3000.0f, glm::vec3(5.0f, 0.0f, 0.0f));
-	// Star hotGiant(5.0f, 10.0f, 20000.0f, glm::vec3(-8.0f, -3.0f, 0.0f));
-	// Star coldSupermassive(50.0f, 5.0f, 3000.0f, glm::vec3(70.0f, 20.0f, 0.0f));
+	Star coldDwarf(0.25f, 0.01f, 3000.0f, glm::vec3(5.0f, 0.0f, 0.0f));
+	// Star hotGiant(5.0f, 100.0f, 20000.0f, glm::vec3(-50.0f, -3.0f, 0.0f));
+	//Star hotSupermassive(50.0f, 50.0f, 12000.0f, glm::vec3(70.0f, 20.0f, 0.0f));
 
-	float r = glm::length(coldDwarf.position - sun.position);
-	float v = sqrt(1.0 * sun.mass / r);
-	coldDwarf.velocity = glm::vec3(0.0f, v, 0.0f);
+	coldDwarf.velocity = glm::vec3(2.0f, 2.0f, 0.0f);
 
-	std::vector<Star*> stars = { &sun, &coldDwarf };
+	std::vector<Star*> stars = { &sun, &coldDwarf,};
 	// texture
 
 	Texture muffin("assets/muffin.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);

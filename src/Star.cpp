@@ -3,8 +3,7 @@
 #include <glm/common.hpp>
 #include <vector>
 
-const float G = 39.478f; // gravitational constant in (AU^3) / (solar mass * year^2)
-float timeScale = 0.01f;
+const float G = 39.47841760435743f; // gravitational constant in (AU^3) / (solar mass * year^2)
 
 void Star::setTemp(float temperature) {
 	this->temperature = temperature;
@@ -36,7 +35,7 @@ void Star::updateAllStarsPhysics(std::vector<Star*>& stars, float deltaTime) {
 	// update velocities and positions
 	for (size_t i = 0; i < stars.size(); ++i) {
 		stars[i]->velocity += accelerations[i] * deltaTime;
-		stars[i]->position += stars[i]->velocity * deltaTime * timeScale;
+		stars[i]->position += stars[i]->velocity * deltaTime;
 	}
 }
 	
