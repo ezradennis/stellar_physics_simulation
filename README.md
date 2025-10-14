@@ -21,6 +21,7 @@ WIP stellar physics simulation in C++ using OpenGL
 
 ## TODO
 
+- Line showing the path of orbit for each object
 - Planets
 - Tool for spawning bodies with the right velocity vector so they actually orbit
 - and don't slingshot to the other side of the universe
