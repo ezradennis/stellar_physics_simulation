@@ -211,14 +211,15 @@ int main()
 	skyboxVBO.Unbind();
 
 	//     radius  mass  temperature       position
-	Star sun(1.0f, 1.0f, 6000.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-	Star coldDwarf(0.25f, 0.01f, 3000.0f, glm::vec3(5.0f, 0.0f, 0.0f));
-	// Star hotGiant(5.0f, 100.0f, 20000.0f, glm::vec3(-50.0f, -3.0f, 0.0f));
+	Star sun(0.25f, 1.0f, 6000.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+	Star coldDwarf(0.1f, 0.01f, 3000.0f, glm::vec3(5.0f, 0.0f, 0.0f));
+	Star hotGiant(1.0f, 5.0f, 20000.0f, glm::vec3(-15.0f, -3.0f, 0.0f));
 	//Star hotSupermassive(50.0f, 50.0f, 12000.0f, glm::vec3(70.0f, 20.0f, 0.0f));
 
 	coldDwarf.velocity = glm::vec3(2.0f, 2.0f, 0.0f);
+	sun.velocity = glm::vec3(0.0f, 2.0f, 0.0f);
 
-	std::vector<Star*> stars = { &sun, &coldDwarf,};
+	std::vector<Star*> stars = { &sun, &coldDwarf, &hotGiant};
 	// texture
 
 	Texture muffin("assets/muffin.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
