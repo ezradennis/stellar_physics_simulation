@@ -1,11 +1,24 @@
 # stellar_physics_simulation
 
+        ~+
+
+                 *       +
+           '                  |
+       ()    .-.,="``"=.    - o -
+             '=/_       \     |
+          *   |  '=._    |
+               \     `=./`,        '
+            .   '=.__.=' `='      *
+   +                         +
+        O      *        '       .
+
 WIP stellar physics simulation in C++ using OpenGL
 
 ## Implemented
 
 - Stars change color based on temperature
-- Simple gravity simulation
+- Gravity physics simulation
+- FPS counter
 
 ## TODO
 
@@ -20,3 +33,4 @@ WIP stellar physics simulation in C++ using OpenGL
 
  - Other types of stellar objects (e.g., neutron stars, black holes)
  - Cooler looking visuals (more vibrant colors, skybox, etc.)
+
