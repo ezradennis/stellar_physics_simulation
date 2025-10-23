@@ -147,6 +147,7 @@
     <ClCompile Include="src\EBO.cpp" />
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Planet.cpp" />
     <ClCompile Include="src\shaderClass.cpp" />
     <ClCompile Include="src\Sphere.cpp" />
     <ClCompile Include="src\stb.cpp" />
@@ -158,6 +159,7 @@
   <ItemGroup>
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\EBO.h" />
+    <ClInclude Include="src\Planet.h" />
     <ClInclude Include="src\shaderClass.h" />
     <ClInclude Include="src\Sphere.h" />
     <ClInclude Include="src\Texture.h" />
