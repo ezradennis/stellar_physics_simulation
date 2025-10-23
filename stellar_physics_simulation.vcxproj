@@ -159,7 +159,6 @@
   <ItemGroup>
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\EBO.h" />
-    <ClInclude Include="src\Planet.h" />
     <ClInclude Include="src\shaderClass.h" />
     <ClInclude Include="src\Sphere.h" />
     <ClInclude Include="src\Texture.h" />

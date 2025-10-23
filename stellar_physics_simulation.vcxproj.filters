@@ -80,9 +80,6 @@
     <ClInclude Include="src\Star.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Planet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md">
