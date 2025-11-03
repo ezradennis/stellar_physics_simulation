@@ -149,6 +149,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Planet.cpp" />
     <ClCompile Include="src\shaderClass.cpp" />
+    <ClCompile Include="src\Skybox.cpp" />
     <ClCompile Include="src\Sphere.cpp" />
     <ClCompile Include="src\stb.cpp" />
     <ClCompile Include="src\Texture.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\EBO.h" />
     <ClInclude Include="src\shaderClass.h" />
+    <ClInclude Include="src\Skybox.h" />
     <ClInclude Include="src\Sphere.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\VAO.h" />
