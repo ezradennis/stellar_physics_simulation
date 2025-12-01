@@ -2,7 +2,7 @@
 
 WIP stellar physics simulation in C++ using OpenGL
 
-![example image] (assets/image.png)
+![example image](assets/image.png)
 
 ## Implemented
 
