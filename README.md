@@ -1,17 +1,8 @@
 # stellar_physics_simulation
 
-        
-
-                 *      
-                              |
-        '    .-.,="``"=.    - o -
-             '=/_       \     |
-          ,   |  '=._    |
-               \     `=./`,        
-            .   '=.__.=' `='                               
- 
-
 WIP stellar physics simulation in C++ using OpenGL
+
+![example image] (assets/image.png)
 
 ## Implemented
 
