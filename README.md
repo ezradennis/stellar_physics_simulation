@@ -1,6 +1,6 @@
 # stellar_physics_simulation
 
-WIP stellar physics simulation in C++ using OpenGL
+stellar physics simulation in C++ using OpenGL
 
 ![example image](assets/image.png)
 
